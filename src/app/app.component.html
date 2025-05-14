@@ -1,20 +1,25 @@
+@let currentDocument = docLoaderService.document$();
 <tui-root>
   <div class="control-panel">
-    <p>Title</p>
+    <p>{{ currentDocument?.name }}</p>
     <div class="view-controls">
       <div class="pages">
-        <p>1</p>
+        <p>0</p>
         <p>/</p>
-        <p>777</p>
+        <p>{{ currentDocument?.pages?.length || 0 }}</p>
       </div>
       <div class="zoom">
-        <tui-icon (click)="increaseZoom()" icon="@tui.plus"></tui-icon>zoom<tui-icon (click)="decreaseZoom()" icon="@tui.minus"></tui-icon>
+        <tui-icon (click)="increaseZoom()" icon="@tui.plus"></tui-icon>
+        zoom
+        <tui-icon (click)="decreaseZoom()" icon="@tui.minus"></tui-icon>
       </div>
     </div>
     <div class="command-controls">
       <tui-icon (click)="saveChanges()" icon="@tui.save"></tui-icon>
     </div>
   </div>
-  <router-outlet></router-outlet>
+  <div class="view-container">
+    <router-outlet></router-outlet>
+  </div>
 
 </tui-root>
