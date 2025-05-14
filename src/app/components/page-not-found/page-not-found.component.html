@@ -1,1 +1,6 @@
-<div>Документ с id не найден</div>
+@if (docLoaderService.loadedId$()) {
+  Документ с id не найден
+} @else {
+  Выберите документ
+}
+
