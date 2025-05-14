@@ -20,6 +20,12 @@ export class DocumentLoaderService {
     this.document$.set(null);
     if (!documentId) return;
     console.log('loading document', documentId);
+    this.httpClient.get(`assets/documents/${documentId}.json`)
+      .subscribe((response: any) => {
+        if (response.pages?.length && typeof response.name === 'string') {
+          this.document$.set(response);
+        }
+      })
     this.document$.set(null)
   }
 

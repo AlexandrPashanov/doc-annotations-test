@@ -1,3 +1,6 @@
 <div class="document-container">
   name
 </div>
+@for (page of docLoaderService.document$()?.pages; track page.number) {
+  <div>{{page.number}}</div>
+}

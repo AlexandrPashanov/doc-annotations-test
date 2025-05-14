@@ -15,6 +15,16 @@
     .view-controls div {
       margin-right: 36px;
     }
+
+    .command-controls {
+      .file-input {
+        display: none;
+      }
+
+      .file-upload {
+        margin-right: 16px;
+      }
+    }
   }
 
   .view-container {

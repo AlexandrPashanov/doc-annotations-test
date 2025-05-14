@@ -15,6 +15,12 @@
       </div>
     </div>
     <div class="command-controls">
+      <input type="file" class="file-input"
+             (change)="loadDocument($event.currentTarget)" #fileUpload>
+
+      <div class="file-upload">
+        <tui-icon (click)="fileUpload.click()" icon="@tui.book-open"></tui-icon>
+      </div>
       <tui-icon (click)="saveChanges()" icon="@tui.save"></tui-icon>
     </div>
   </div>
