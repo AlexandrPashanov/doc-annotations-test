@@ -18,10 +18,9 @@
       <input type="file" class="file-input"
              (change)="loadDocument($event.currentTarget)" #fileUpload>
 
-      <div class="file-upload">
-        <tui-icon (click)="fileUpload.click()" icon="@tui.book-open"></tui-icon>
-      </div>
-      <tui-icon (click)="saveChanges()" icon="@tui.save"></tui-icon>
+      <tui-icon class="file-upload" [tuiHint]="'Открыть документ'" (click)="fileUpload.click()" icon="@tui.book-open"></tui-icon>
+      <tui-icon [tuiHint]="'Закрыть документ'" (click)="closeDocument()" icon="@tui.x"></tui-icon>
+      <tui-icon [tuiHint]="'Сохранить аннотации'" (click)="saveChanges()" icon="@tui.save"></tui-icon>
     </div>
   </div>
   <div class="view-container">
