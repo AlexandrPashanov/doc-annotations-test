@@ -33,6 +33,7 @@
     grid-template-rows: [row1-start] calc(100vh - 48px);
     background-color: black;
     color: white;
+    overflow: auto;
 
     > * {
       grid-column-start: 1;
