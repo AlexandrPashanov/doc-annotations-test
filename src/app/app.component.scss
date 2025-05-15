@@ -1,10 +1,16 @@
 :host {
   .control-panel {
-    height: 48px;
+    height: 64px;
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-around;
+    justify-content: space-evenly;
+    border-bottom: 1px solid black;
+    font-size: 1.2rem;
+
+    tui-icon {
+      font-size: 2rem;
+    }
 
     div {
       display: flex;
@@ -17,20 +23,17 @@
     }
 
     .command-controls {
+      gap: 1rem;
       .file-input {
         display: none;
-      }
-
-      .file-upload {
-        margin-right: 16px;
       }
     }
   }
 
   .view-container {
     display: grid;
-    grid-template-columns: 1fr 4fr 1fr;
-    grid-template-rows: [row1-start] calc(100vh - 48px);
+    grid-template-columns: 2fr 4fr 2fr;
+    grid-template-rows: [row1-start] calc(100vh - 64px);
     background-color: black;
     color: white;
     overflow: auto;
