@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { DocumentLoaderService } from '../../services/document-loader.service';
+import { DocumentViewerService } from '../../services/document-viewer.service';
 
 @Component({
   selector: 'app-page-not-found',
@@ -8,5 +9,5 @@ import { DocumentLoaderService } from '../../services/document-loader.service';
   styleUrl: './page-not-found.component.scss'
 })
 export class PageNotFoundComponent {
-  constructor(public docLoaderService: DocumentLoaderService) {}
+  constructor(public documentViewerService: DocumentViewerService) {}
 }
