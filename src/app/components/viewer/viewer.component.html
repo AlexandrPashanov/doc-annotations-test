@@ -1,3 +1,5 @@
-@for (page of docLoaderService.document$()?.pages; track page.number) {
-  <img class="page-container" width="800" height="1200" [ngSrc]=page.imageUrl alt=""/>
-}
+<div [style.transform]="documentViewerService.transform$ | async">
+  @for (page of documentViewerService.document$()?.pages; track page.number) {
+    <img class="page-container" width="800" height="1200" [ngSrc]=page.imageUrl alt="" priority/>
+  }
+</div>

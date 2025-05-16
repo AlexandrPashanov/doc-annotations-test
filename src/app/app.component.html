@@ -1,4 +1,4 @@
-@let currentDocument = docLoaderService.document$();
+@let currentDocument = documentViewerService.document$();
 <tui-root>
   <div class="control-panel">
     <p>{{ currentDocument?.name }}</p>
@@ -10,7 +10,7 @@
       </div>
       <div class="zoom">
         <tui-icon (click)="increaseZoom()" icon="@tui.plus"></tui-icon>
-        zoom
+        <p>{{ (((documentViewerService.scale$ | async) || 1) * 100) | number: '1.0-0' }}%</p>
         <tui-icon (click)="decreaseZoom()" icon="@tui.minus"></tui-icon>
       </div>
     </div>

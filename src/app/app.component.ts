@@ -3,17 +3,21 @@ import { Component } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { DocumentLoaderService } from './services/document-loader.service';
 import { TuiTooltip } from '@taiga-ui/kit';
+import { DocumentViewerService } from './services/document-viewer.service';
+import { tuiClamp, TuiZoom, TuiZoomEvent } from '@taiga-ui/cdk';
+import { map, scan, startWith, Subject } from 'rxjs';
+import { AsyncPipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TuiRoot, TuiIcon, TuiHintDirective],
+  imports: [RouterOutlet, TuiRoot, TuiIcon, TuiHintDirective, AsyncPipe, DecimalPipe],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
   title = 'doc-annotations-test';
 
-  constructor(public docLoaderService: DocumentLoaderService, private router: Router) {}
+  constructor(public documentViewerService: DocumentViewerService, private router: Router) {}
 
   saveChanges(): void {
     console.log('saveChanges');
@@ -23,7 +27,7 @@ export class AppComponent {
     if (!eventTarget) return;
     const file: FileList | null = (eventTarget as HTMLInputElement).files;
     if (file && file.length > 0) {
-      this.router.navigate([`viewer/${this.getFileIdFormName(file[0].name)}`]);
+      this.router.navigate([`viewer/${this.getFileIdFromFileName(file[0].name)}`]);
     }
   }
 
@@ -32,15 +36,14 @@ export class AppComponent {
   }
 
   decreaseZoom(): void {
-    console.log('decreaseZoom');
+    this.documentViewerService.onZoom(-0.1)
   }
 
   increaseZoom(): void {
-    console.log('increaseZoom');
+    this.documentViewerService.onZoom(0.1)
   }
 
-  private getFileIdFormName(fileName: string): string {
-    const formatPeriodIndex: number = fileName.lastIndexOf('.')
-    return fileName.substring(0, formatPeriodIndex);
+  private getFileIdFromFileName(fileName: string): string {
+    return fileName.substring(0,  fileName.lastIndexOf('.'));
   }
 }

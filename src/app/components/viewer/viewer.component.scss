@@ -1,6 +1,10 @@
 :host {
   width: 100%;
   height: fit-content;
+  > div {
+    position: relative;
+    transform-origin: 50% 0;
+  }
   .page-container {
     background-color: white;
     border: 1px solid black;
