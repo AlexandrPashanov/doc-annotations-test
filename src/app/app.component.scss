@@ -34,9 +34,6 @@
 
     .command-controls {
       gap: 1rem;
-      .file-input {
-        display: none;
-      }
     }
   }
 
@@ -53,5 +50,10 @@
       width: 100%;
       height: 100%;
     }
+  }
+
+  .annotation-content {
+    margin: 5px 0;
+    min-height: 130px;
   }
 }

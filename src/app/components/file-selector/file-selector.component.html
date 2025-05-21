@@ -1,0 +1,14 @@
+<input type="file" class="file-input"
+       (change)="selected($event.currentTarget)" #fileUpload>
+@if (commonButtonText) {
+  <button
+    appearance="primary"
+    tuiButton
+    type="button"
+    (click)="fileUpload.click()"
+  >
+    {{commonButtonText}}
+  </button>
+} @else {
+  <tui-icon class="file-upload" [tuiHint]="tooltip" (click)="fileUpload.click()" icon="@tui.book-open"></tui-icon>
+}

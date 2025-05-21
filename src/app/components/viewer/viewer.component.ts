@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AsyncPipe, NgOptimizedImage } from '@angular/common';
 import { DocumentViewerService } from '../../services/document-viewer.service';
+import { AnnotationsService } from '../../services/annotations.service';
 
 @Component({
   selector: 'app-viewer',
@@ -14,7 +15,7 @@ import { DocumentViewerService } from '../../services/document-viewer.service';
 })
 export class ViewerComponent implements OnInit {
 
-  constructor(public router: ActivatedRoute, public documentViewerService: DocumentViewerService) { }
+  constructor(public router: ActivatedRoute, public documentViewerService: DocumentViewerService, public annotationsService: AnnotationsService) { }
 
   ngOnInit() {
     console.log('ngOnInit', this.router.snapshot.params);

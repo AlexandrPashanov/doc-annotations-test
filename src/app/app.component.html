@@ -15,11 +15,10 @@
       </div>
     </div>
     <div class="command-controls">
-      <input type="file" class="file-input"
-             (change)="loadDocument($event.currentTarget)" #fileUpload>
-
-      <tui-icon class="file-upload" [tuiHint]="'Открыть документ'" (click)="fileUpload.click()" icon="@tui.book-open"></tui-icon>
+      <app-file-selector [tooltip]="'Выберите документ'" (fileSelected)="loadDocument($event)"></app-file-selector>
       <tui-icon [tuiHint]="'Закрыть документ'" (click)="closeDocument()" icon="@tui.x"></tui-icon>
+      <tui-icon [tuiHint]="'Добавить аннотацию'" (click)="openAnnotationDialog(dialogTemplate)"
+                icon="@tui.book-plus"></tui-icon>
       <tui-icon [tuiHint]="'Сохранить аннотации'" (click)="saveChanges()" icon="@tui.save"></tui-icon>
     </div>
   </div>
@@ -28,3 +27,58 @@
   </div>
 
 </tui-root>
+
+<ng-template
+  #dialogTemplate
+  let-observer
+>
+  <p>Укажите формат аннотации</p>
+  <div
+    tuiGroup
+    class="group"
+    [collapsed]="true"
+  >
+    <button
+      appearance="outline"
+      tuiButton
+      type="button"
+      (click)="annotationsService.switchType('text')"
+    >
+      Текст
+    </button>
+    <button
+      appearance="outline"
+      tuiButton
+      type="button"
+      (click)="annotationsService.switchType('image')"
+    >
+      Изображение
+    </button>
+  </div>
+  <div class="annotation-content">
+    @if (annotationsService.type === 'text') {
+      <tui-textfield [style.margin-block-end.rem]="1">
+        <label tuiLabel>Текст аннотации</label>
+        <textarea
+          tuiTextarea
+          [formControl]="annotationsService.annotationControl"
+          [limit]="100"
+          [max]="6"
+          [min]="3"
+        ></textarea>
+      </tui-textfield>
+    } @else {
+      <app-file-selector (fileSelected)="selectPicture($event)"
+                         [commonButtonText]="'Выберите картинку для аннотации'"></app-file-selector>
+      <div>{{ annotationsService.annotationControl.value?.name }}</div>
+    }
+  </div>
+  <button
+    appearance="primary"
+    tuiButton
+    type="button"
+    (click)="addAnnotation(observer)"
+  >
+    Добавить аннотацию
+  </button>
+</ng-template>

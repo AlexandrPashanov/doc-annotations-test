@@ -1,34 +1,56 @@
-import { TuiHint, TuiHintDirective, TuiIcon, TuiRoot } from "@taiga-ui/core";
-import { Component } from '@angular/core';
+import {
+  TuiButton,
+  TuiDialogContext,
+  TuiDialogService, TuiGroup,
+  TuiHint,
+  TuiHintDirective,
+  TuiIcon,
+  TuiRoot, TuiTextfield
+} from "@taiga-ui/core";
+import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
 import { DocumentLoaderService } from './services/document-loader.service';
-import { TuiTooltip } from '@taiga-ui/kit';
+import { TuiTextarea, TuiTextareaLimit, TuiTooltip } from '@taiga-ui/kit';
 import { DocumentViewerService } from './services/document-viewer.service';
 import { tuiClamp, TuiZoom, TuiZoomEvent } from '@taiga-ui/cdk';
-import { map, scan, startWith, Subject } from 'rxjs';
+import { map, Observable, scan, startWith, Subject, Subscriber, Subscription } from 'rxjs';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
+import type { PolymorpheusContent } from '@taiga-ui/polymorpheus';
+import { AnnotationsService, AnnotationType } from './services/annotations.service';
+import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { FileSelectorComponent } from './components/file-selector/file-selector.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TuiRoot, TuiIcon, TuiHintDirective, AsyncPipe, DecimalPipe],
+  imports: [RouterOutlet, TuiRoot, TuiIcon, TuiHintDirective, AsyncPipe, DecimalPipe, TuiButton, TuiGroup, TuiTextfield, TuiTextarea, TuiTextareaLimit, ReactiveFormsModule, FileSelectorComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
 export class AppComponent {
-  title = 'doc-annotations-test';
+  private readonly dialogs = inject(TuiDialogService);
 
-  constructor(public documentViewerService: DocumentViewerService, private router: Router) {}
+  constructor(public documentViewerService: DocumentViewerService, public annotationsService: AnnotationsService, private router: Router) {}
+
+  protected openAnnotationDialog(content: PolymorpheusContent<TuiDialogContext>): void {
+    this.dialogs.open(content, {size: 'l'}).subscribe();
+  }
+
+  addAnnotation(observer: Subscriber<unknown>): void {
+    observer.complete();
+    this.annotationsService.addListener();
+  }
+
+  selectPicture(file: File) {
+    console.log('addPicture');
+    this.annotationsService.annotationControl.setValue(file);
+  }
 
   saveChanges(): void {
     console.log('saveChanges');
   }
 
-  loadDocument(eventTarget: EventTarget | null): void {
-    if (!eventTarget) return;
-    const file: FileList | null = (eventTarget as HTMLInputElement).files;
-    if (file && file.length > 0) {
-      this.router.navigate([`viewer/${this.getFileIdFromFileName(file[0].name)}`]);
-    }
+  loadDocument(file: File): void {
+      this.router.navigate([`viewer/${this.getFileIdFromFileName(file.name)}`]);
   }
 
   closeDocument(): void {
@@ -44,6 +66,6 @@ export class AppComponent {
   }
 
   private getFileIdFromFileName(fileName: string): string {
-    return fileName.substring(0,  fileName.lastIndexOf('.'));
+    return fileName.substring(0, fileName.lastIndexOf('.'));
   }
 }

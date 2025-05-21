@@ -1,5 +1,7 @@
-<div [style.transform]="documentViewerService.transform$ | async">
+<div id="viewContainer" [style.transform]="documentViewerService.transform$ | async">
   @for (page of documentViewerService.document$()?.pages; track page.number) {
-    <img class="page-container" width="800" height="1200" [ngSrc]=page.imageUrl alt="" priority/>
+    <img (click)="annotationsService.removeListener($event)"
+         [style.cursor]="annotationsService.addAnnotationMode ? 'crosshair' : 'default'" class="page-container"
+         width="800" height="1200" [ngSrc]=page.imageUrl alt="" [id]="page.number" priority/>
   }
 </div>
