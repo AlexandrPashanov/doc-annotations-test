@@ -1,28 +1,26 @@
 import {
   TuiButton,
   TuiDialogContext,
-  TuiDialogService, TuiGroup,
-  TuiHint,
+  TuiDialogService,
+  TuiGroup,
   TuiHintDirective,
-  TuiIcon,
-  TuiRoot, TuiTextfield
+  TuiIcon, TuiRoot,
+  TuiTextfield
 } from "@taiga-ui/core";
 import { Component, inject } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { DocumentLoaderService } from './services/document-loader.service';
-import { TuiTextarea, TuiTextareaLimit, TuiTooltip } from '@taiga-ui/kit';
+import { TuiTextarea, TuiTextareaLimit } from '@taiga-ui/kit';
 import { DocumentViewerService } from './services/document-viewer.service';
-import { tuiClamp, TuiZoom, TuiZoomEvent } from '@taiga-ui/cdk';
-import { map, Observable, scan, startWith, Subject, Subscriber, Subscription } from 'rxjs';
+import { Subscriber } from 'rxjs';
 import { AsyncPipe, DecimalPipe } from '@angular/common';
 import type { PolymorpheusContent } from '@taiga-ui/polymorpheus';
-import { AnnotationsService, AnnotationType } from './services/annotations.service';
-import { FormControl, ReactiveFormsModule } from '@angular/forms';
+import { AnnotationsService } from './services/annotations.service';
+import { ReactiveFormsModule } from '@angular/forms';
 import { FileSelectorComponent } from './components/file-selector/file-selector.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, TuiRoot, TuiIcon, TuiHintDirective, AsyncPipe, DecimalPipe, TuiButton, TuiGroup, TuiTextfield, TuiTextarea, TuiTextareaLimit, ReactiveFormsModule, FileSelectorComponent],
+  imports: [RouterOutlet, TuiIcon, TuiHintDirective, AsyncPipe, DecimalPipe, TuiButton, TuiGroup, TuiTextfield, TuiTextarea, TuiTextareaLimit, ReactiveFormsModule, FileSelectorComponent, TuiRoot],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })
@@ -41,19 +39,24 @@ export class AppComponent {
   }
 
   selectPicture(file: File) {
-    console.log('addPicture');
     this.annotationsService.annotationControl.setValue(file);
   }
 
   saveChanges(): void {
-    console.log('saveChanges');
+    const documentInfo = this.documentViewerService.document$();
+    if (documentInfo) {
+      documentInfo.annotations = this.annotationsService.addedAnnotations;
+    }
+    console.log('Document information', documentInfo);
   }
 
   loadDocument(file: File): void {
-      this.router.navigate([`viewer/${this.getFileIdFromFileName(file.name)}`]);
+    this.router.navigate([`viewer/${this.getFileIdFromFileName(file.name)}`]);
   }
 
   closeDocument(): void {
+    this.documentViewerService.document$.set(null);
+    this.documentViewerService.documentId$.set('');
     this.router.navigate([`viewer/`]);
   }
 

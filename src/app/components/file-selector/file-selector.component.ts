@@ -16,12 +16,12 @@ export class FileSelectorComponent {
   @Input() commonButtonText = '';
   @Output() fileSelected: EventEmitter<File> = new EventEmitter();
 
-  selected(eventTarget: EventTarget | null): void {
+  selected(eventTarget: EventTarget | null, inputElement: HTMLInputElement): void {
     if (!eventTarget) return;
     const file: FileList | null = (eventTarget as HTMLInputElement).files;
     if (file && file.length > 0) {
-      this.fileSelected.emit(file[0]);
+      this.fileSelected.emit([...file][0]);
+      inputElement.value = '';
     }
   }
-
 }

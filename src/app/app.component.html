@@ -3,11 +3,6 @@
   <div class="control-panel">
     <p>{{ currentDocument?.name }}</p>
     <div class="view-controls">
-      <div class="pages">
-        <p>0</p>
-        <p>/</p>
-        <p>{{ currentDocument?.pages?.length || 0 }}</p>
-      </div>
       <div class="zoom">
         <tui-icon (click)="increaseZoom()" icon="@tui.plus"></tui-icon>
         <p>{{ (((documentViewerService.scale$ | async) || 1) * 100) | number: '1.0-0' }}%</p>

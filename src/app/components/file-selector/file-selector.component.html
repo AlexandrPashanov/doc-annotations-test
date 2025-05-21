@@ -1,5 +1,5 @@
 <input type="file" class="file-input"
-       (change)="selected($event.currentTarget)" #fileUpload>
+       (change)="selected($event.currentTarget, fileUpload)" #fileUpload>
 @if (commonButtonText) {
   <button
     appearance="primary"

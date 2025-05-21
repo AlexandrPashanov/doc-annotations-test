@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
 import { FormControl } from '@angular/forms';
-
-export type AnnotationType = 'image' | 'text';
+import { AnnotationType } from '../interfaces/annotation.type';
+import { IAnnotation } from '../interfaces/document.interface';
+import {v4 as uuidv4} from 'uuid';
 
 @Injectable({
   providedIn: 'root'
@@ -9,6 +10,7 @@ export type AnnotationType = 'image' | 'text';
 export class AnnotationsService {
   addAnnotationMode = false;
   annotationControl: FormControl = new FormControl();
+  addedAnnotations: IAnnotation[] = [];
 
   private deleteButton: () => HTMLElement = () => {
     const deleteIcon: HTMLElement = document.createElement('group');
@@ -22,6 +24,7 @@ export class AnnotationsService {
     deleteIcon.onclick = () => {
       const svgElement = deleteIcon.parentElement;
       if (svgElement) {
+        this.addedAnnotations = this.addedAnnotations.filter((annotation: IAnnotation) => annotation.id !== svgElement.id);
         svgElement.remove();
       }
     }
@@ -56,19 +59,25 @@ export class AnnotationsService {
   private createAnnotation(event: MouseEvent) {
     const element = document.getElementById('viewContainer');
     if (!this.addAnnotationMode || !element) return;
-    const svgCore: HTMLElement = this.drawAnnotationContainer(event);
+    const id: string = uuidv4();
+    const svgCore: HTMLElement = this.drawAnnotationContainer(event, id);
 
     if (this.type === 'text') {
       this.drawTextAnnotation(event, svgCore);
     } else {
       this.drawImageAnnotation(svgCore);
     }
-
+    this.addedAnnotations.push({
+      id,
+      type: this.type,
+      content: this.annotationControl.value
+    });
     element.appendChild(svgCore);
   }
 
-  private drawAnnotationContainer(event: MouseEvent): HTMLElement {
+  private drawAnnotationContainer(event: MouseEvent, id: string): HTMLElement {
     const rootElement: HTMLElement = document.createElement('svg');
+    rootElement.setAttribute('id', id);
     rootElement.classList.add('draggable');
     rootElement.addEventListener('mousedown', this.startDrag);
     rootElement.addEventListener('mousemove', this.drag);

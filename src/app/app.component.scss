@@ -18,6 +18,13 @@
       }
     }
 
+    > p {
+      width: 100%;
+      max-width: 150px;
+      min-width: 150px;
+      text-align: center;
+    }
+
     tui-icon {
       font-size: 2rem;
     }
@@ -39,7 +46,7 @@
 
   .view-container {
     display: grid;
-    grid-template-columns: 2fr 4fr 2fr;
+    grid-template-columns: 2fr 800px 2fr;
     grid-template-rows: [row1-start] calc(100vh - 64px);
     background-color: black;
     color: white;
